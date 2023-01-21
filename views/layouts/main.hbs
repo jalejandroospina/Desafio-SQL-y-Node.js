@@ -1,0 +1,61 @@
+  <div class="container mt-5">
+            <form action="/productos" method="POST">
+
+                <h2>Ingresar productos</h2>
+                <br>
+
+                <label class="form-label">Nombre del producto</label>
+                <input class="form-control" type="text" name="nombre" placeholder="Ejemplo">
+                <br>
+
+                 <label class="form-label">Precio</label>
+                 <input class="form-control" type="text" name="precio" placeholder="1000">
+                 <br>
+
+
+                <label class="form-label">Imagen</label>
+                <input class="form-control" type="text" name="imagen" placeholder="URL">
+
+                <br>
+                
+                <div>   
+                    <button class="btn btn-success" type="submit">Guardar</button>
+                </div>
+
+
+            </form>
+            <div>
+
+                <div class="mt-5"><h2>Productos Agregados</h2></div>
+                <table class="table mt-5">
+                    <thead>
+                    <tr>
+                        
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Imagen</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            {{#each productos}}
+                            <tr>
+                            
+                            <td>{{nombre}} </td>
+                            <td>{{precio}} </td>
+                            <td> <img src={{imagen}} alt="image" width="50px" height="50px"> </td>
+                            </tr>
+                            {{/each}}
+                        </tr>
+      
+                    </tbody>
+                </table>
+
+    
+            </div>
+        </div>
+
+        
+
+        

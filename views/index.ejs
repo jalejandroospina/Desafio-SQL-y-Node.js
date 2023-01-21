@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+  </head>
+  <body>
+    
+    <div class="container">
+      <header>
+        <%- include('./partials/header') %>
+      </header>
+
+      <main>
+        <div class="container mt-5">
+            <form action="/productos" method="POST">
+        
+                <h2>Ingresar productos</h2>
+                <br>
+        
+                <label class="form-label">Nombre del producto</label>
+                <input class="form-control" type="text" name="nombre" placeholder="Ejemplo">
+                <br>
+        
+                 <label class="form-label">Precio</label>
+                 <input class="form-control" type="text" name="precio" placeholder="1000">
+                 <br>
+        
+        
+                <label class="form-label">Imagen</label>
+                <input class="form-control" type="text" name="imagen" placeholder="URL">
+        
+                <br>
+                
+                <div>   
+                    <button class="btn btn-success" type="submit">Guardar</button>
+                </div>
+        
+        
+            </form>
+
+            <% if (productos.length) { %>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Precio</th>
+                      <th scope="col">Imagen</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% productos.forEach((producto, index) => { %>
+                    <tr>
+                      <th scope="row"> <%= index + 1 %></th>
+                      <td><%= producto.nombre %></td>
+                      <td><%= producto.precio %></td>
+                      <td>  <img alt="image" width="50px" height="50px" src=<%= producto.imagen %> /> </td> 
+                      
+
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              <% } else { %>
+                <p>No se encontraron datos</p>
+              <% } %>
+            
+        </div>
+        
+      </main>
+      <%- include('./partials/footer') %>
+      
+    </div>
+  </body>
+</html>
