@@ -1,5 +1,6 @@
 // Desafio SQL & Node
 
+
 //--------------- Configuracion DB------------------
 const knex = require('knex'); 
  const options = 
@@ -81,7 +82,7 @@ app.get('/', (req,res)=>
   }
   const database = knex(options)// conexion a la base de datos 
 
-  database.from('productos').select('*')
+  database.from('productos').select('*')   // consulta a la  db
   .then(data =>console.log(JSON.parse(JSON.stringify(data))))
   .catch(err => console.log(err))
   .finally(() => database.destroy)
@@ -102,7 +103,7 @@ app.post('/productos',(req,res)=>
 
   const database = knex(options)// conexion a la base de datos 
 
-  database('productos').insert(producto)
+  database('productos').insert(producto)  // adicion de informacion a la db
   .then((result) => console.log(result))
   .catch(err => console.log(err))
   .finally(() => database.destroy())
