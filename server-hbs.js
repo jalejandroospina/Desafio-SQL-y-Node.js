@@ -1,5 +1,5 @@
 // Desafio SQL & Node
-// En el endpoiont .post/productos se crea la tabla y se llena con los datos seleccionados
+
 //--------------- Configuracion DB------------------
 const knex = require('knex'); 
  const options = 
@@ -45,13 +45,48 @@ server.on('error', err => console.log(`Error en servidor: ${err}`))
 //Handlebars
 const productos = [];// array vacio en donde se cargan los datos ingresados
 
+ //----- Gestion a la base de Datos---
+ const database = knex(options)// conexion a la base de datos
+
+  // Validacion y creacion dee la tabla
+  const manageDb= async() => {
+
+    let tableExist =  await database.schema.hasTable('productos')
+
+    if(tableExist)
+    {
+       await database.schema.dropTable('productos')
+    }
+
+    await database.schema.createTable('productos',table => { // creacion de tabla
+      table.increments('id'),
+      table.string('nombre', 20),
+      table.integer('precio'),
+      table.string('imagen',20)
+     })
+
+  }
+     
+  manageDb()   // fin de conexion a DB
+     .then(() => console.log('Tabla creada correctamente')) 
+     .catch(err => console.log(err))
+     .finally(() => database.destroy())
+ 
+//-------------------------    
     
 app.get('/', (req,res)=> 
 {
-  const params = {
+  let params = {
     productos
   }
-    
+  const database = knex(options)// conexion a la base de datos 
+
+  database.from('productos').select('*')
+  .then(data =>console.log(JSON.parse(JSON.stringify(data))))
+  .catch(err => console.log(err))
+  .finally(() => database.destroy)
+
+  
     return res. render('layouts/main', params) // archivo y variables a renderizar
 })
 
@@ -65,44 +100,23 @@ app.post('/productos',(req,res)=>
   }
   productos.push(producto); 
 
-  //----- Gestion a la base de Datos---
-  const database = knex(options)// conexion a la base de datos}
+  const database = knex(options)// conexion a la base de datos 
 
-  const ManageDatabase = async() => {   // Validacion si existe la tabla
-      let tableExist = await database.schema.hasTable('productos')
+  database('productos').insert(producto)
+  .then((result) => console.log(result))
+  .catch(err => console.log(err))
+  .finally(() => database.destroy())
 
-      if(tableExist)
-      {
-        await database.schema.dropTable('productos')
-      }
-      await database.schema.createTable('productos',table => { // creacion de tabla
-        table.increments('id'),
-        table.string('nombre', 20),
-        table.integer('precio'),
-        table.string('imagen',20)
-    }) 
-
-    await database('productos').insert(productos) // insertar array con los productos ingresados a la tabla
-
- }
-    ManageDatabase()    // fin de conexion a DB
-      .then(() => console.log('Datos ingresados correctamente')) 
-      .catch(err => console.log(err))
-      .finally(() => database.destroy())
-  
-//-------------------------    
   return res.redirect('/')
 })
 
 
 
+  
 
-app.get('/productos', (req,res)=> // end point donde retorna la data
-{
-  console.log(productos)
-  return res. render('layouts/productos',productos) // archivo y variables a renderizar
-})
-//
+
+
+
 
 
 
